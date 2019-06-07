@@ -21,8 +21,10 @@ import com.facebook.presto.spi.ConnectorSplitSource;
 import com.facebook.presto.spi.ConnectorTableLayoutHandle;
 import com.facebook.presto.spi.connector.ConnectorSplitManager;
 import com.facebook.presto.spi.connector.ConnectorTransactionHandle;
+import com.facebook.presto.spi.connector.classloader.ClassLoaderSafeConnectorSplitSource;
 import com.facebook.presto.spi.predicate.TupleDomain;
 import com.facebook.presto.spi.type.TypeManager;
+import io.airlift.log.Logger;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.iceberg.Table;
@@ -43,6 +45,7 @@ public class IcebergSplitManager
     private final TypeTranslator typeTranslator;
     private final TypeManager typeRegistry;
     private final IcebergUtil icebergUtil;
+    private final Logger log;
 
     @Inject
     public IcebergSplitManager(
@@ -55,6 +58,7 @@ public class IcebergSplitManager
         this.typeTranslator = typeTranslator;
         this.typeRegistry = typeRegistry;
         this.icebergUtil = icebergUtil;
+        this.log = Logger.get("IcebergSplitManager");
     }
 
     @Override
@@ -80,6 +84,13 @@ public class IcebergSplitManager
         snapshotTimestamp = snapshotTimestamp != null ? snapshotTimestamp : currentSnapshotTimestamp;
         // TODO Use residual. Right now there is no way to propagate residual to presto but at least we can
         // propagate it at split level so the parquet pushdown can leverage it.
+
+        log.info("Getting splits");
+        log.info("Table %s", icebergTable.schema().toString());
+        log.info("Snapshot Id %s", snapshotId.toString());
+        log.info("Snapshot timestamp %s", snapshotTimestamp.toString());
+        log.info("Getting splits");
+
         final IcebergSplitSource icebergSplitSource = new IcebergSplitSource(
                   tbl.getDatabase(),
                   tbl.getTableName(),
@@ -94,6 +105,6 @@ public class IcebergSplitManager
                   snapshotId,
                   snapshotTimestamp);
 
-        return icebergSplitSource;
+        return new ClassLoaderSafeConnectorSplitSource(icebergSplitSource, Thread.currentThread().getContextClassLoader());
     }
 }

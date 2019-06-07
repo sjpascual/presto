@@ -26,9 +26,9 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.github.apache.incubator-iceberg</groupId>
-      <artifactId>iceberg-presto-runtime</artifactId>
-      <version>master-7cde6091d8-1</version>
+      <groupId>com.github.sjpascual.incubator-iceberg</groupId>
+      <artifactId>iceberg-runtime</artifactId>
+      <version>emr-SNAPSHOT</version>
     </dependency>
 
     <dependency>

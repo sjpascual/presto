@@ -40,6 +40,7 @@ import com.facebook.presto.spi.predicate.TupleDomain;
 import com.facebook.presto.spi.type.TypeManager;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import io.airlift.log.Logger;
 import io.airlift.units.DataSize;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
@@ -95,6 +96,7 @@ public class IcebergPageSourceProvider
     private final HiveClientConfig hiveClientConfig;
     private final ParquetFileWriterConfig parquetFileWriterConfig;
     private FileFormatDataSourceStats fileFormatDataSourceStats;
+    private final Logger log;
 
     @Inject
     public IcebergPageSourceProvider(
@@ -110,6 +112,7 @@ public class IcebergPageSourceProvider
         this.hdfsEnvironment = hdfsEnvironment;
         this.typeManager = typeManager;
         this.fileFormatDataSourceStats = fileFormatDataSourceStats;
+        this.log = Logger.get("IcebergPageSourceProvider");
     }
 
     @Override
@@ -163,6 +166,8 @@ public class IcebergPageSourceProvider
             Long snapshotId,
             Long snapshotTimeStamp)
     {
+        log.info("Creating page source: Path %s", path.toString());
+
         AggregatedMemoryContext systemMemoryContext = AggregatedMemoryContext.newSimpleAggregatedMemoryContext();
 
         ParquetDataSource dataSource = null;
@@ -236,6 +241,8 @@ public class IcebergPageSourceProvider
                     .filter(c -> c.getColumnType() == REGULAR)
                     .map(c -> parquetColumns.containsKey(c.getName()) ? parquetColumns.get(c.getName()) : c)
                     .collect(toList());
+
+            log.info("Columns: %s", String.join(", ", columnNameReplaced.stream().map(HiveColumnHandle::getName).collect(toList())));
 
             return new HivePageSource(
                     mappingBuilder.build(),

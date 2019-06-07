@@ -164,5 +164,9 @@
             <directory>${project.build.directory}/dependency/presto-elasticsearch-${project.version}</directory>
             <outputDirectory>plugin/presto-elasticsearch</outputDirectory>
         </fileSet>
+        <fileSet>
+            <directory>${project.build.directory}/dependency/presto-iceberg-${project.version}</directory>
+            <outputDirectory>plugin/iceberg</outputDirectory>
+        </fileSet>
     </fileSets>
 </assembly>
