@@ -92,13 +92,14 @@ public class TypeConverter
             case TIME:
                 return TimeType.TIME;
             case TIMESTAMP:
-                org.apache.iceberg.types.Types.TimestampType timestampType = (org.apache.iceberg.types.Types.TimestampType) type;
-                if (timestampType.shouldAdjustToUTC()) {
-                    return TimestampWithTimeZoneType.TIMESTAMP_WITH_TIME_ZONE;
-                }
-                else {
-                    return TimestampType.TIMESTAMP;
-                }
+                return TimestampType.TIMESTAMP;
+//                org.apache.iceberg.types.Types.TimestampType timestampType = (org.apache.iceberg.types.Types.TimestampType) type;
+//                if (timestampType.shouldAdjustToUTC()) {
+//                    return TimestampWithTimeZoneType.TIMESTAMP_WITH_TIME_ZONE;
+//                }
+//                else {
+//                    return TimestampType.TIMESTAMP;
+//                }
             case UUID:
             case STRING:
                 return VarcharType.createUnboundedVarcharType();
