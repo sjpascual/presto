@@ -115,7 +115,7 @@ public class IcebergConnectorFactory
 
             Injector injector = app
                     .strictConfig()
-                    //.doNotInitializeLogging()
+                    .doNotInitializeLogging()
                     .setRequiredConfigurationProperties(config)
                     .initialize();
 
