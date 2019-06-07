@@ -19,8 +19,9 @@ import com.facebook.presto.spi.type.DateTimeEncoding;
 import com.facebook.presto.spi.type.TimeZoneKey;
 import com.facebook.presto.spi.type.TimestampWithTimeZoneType;
 import com.facebook.presto.spi.type.Type;
-import java.util.concurrent.TimeUnit;
 import org.apache.parquet.schema.OriginalType;
+
+import java.util.concurrent.TimeUnit;
 
 public class LongColumnReader
         extends PrimitiveColumnReader

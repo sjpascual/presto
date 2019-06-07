@@ -13,10 +13,10 @@
  */
 package com.facebook.presto.iceberg;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.iceberg.Metrics;
 import org.apache.iceberg.exceptions.RuntimeIOException;
+import org.apache.iceberg.shaded.com.fasterxml.jackson.core.JsonGenerator;
+import org.apache.iceberg.shaded.com.fasterxml.jackson.databind.JsonNode;
 import org.apache.iceberg.util.JsonUtil;
 
 import java.io.IOException;

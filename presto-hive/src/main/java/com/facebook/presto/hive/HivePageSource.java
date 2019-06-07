@@ -192,6 +192,9 @@ public class HivePageSource
                 else if (isLongDecimal(type)) {
                     prefilledValue = longDecimalPartitionKey(columnValue, (DecimalType) type, name);
                 }
+                else if (type.equals(VarbinaryType.VARBINARY)) {
+                    prefilledValue = utf8Slice(columnValue);
+                }
                 else {
                     throw new PrestoException(NOT_SUPPORTED, format("Unsupported column type %s for prefilled column: %s", type.getDisplayName(), name));
                 }
